@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Visit;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use App\Http\Requests\CreateVisitRequest;
 use App\Http\Requests\UpdateVisitRequest;
 use App\Services\Visit\VisitService;
@@ -16,10 +17,13 @@ class VisitController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $visits = $this->visitService->getPaginatedVisits();
-        return view('visits.index', compact('visits'));
-    }
+{
+    $visits = $this->visitService->getPaginatedVisits(); // se mantiene tu lógica de servicio
+
+    return Inertia::render('Dashboard', [
+        'visits' => $visits
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.
