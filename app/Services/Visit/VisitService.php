@@ -2,46 +2,32 @@
 
 namespace App\Services\Visit;
 
-
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use App\Models\visit;
+use App\Models\Visit;
 
 class VisitService
 {
-    /**
-     * Create a new visit.
-     *
-     * @param array $data
-     * @return \App\Models\visit
-     */
-
-    public function createVisit(array $data): visit
+    public function getAllVisits()
     {
-        return Visit::create($data);
+        return Visit::orderBy('created_at', 'desc')->get();
     }
 
-    public function getVisitById(int $id): visit
+    public function getVisitById(int $id): Visit
     {
         return Visit::findOrFail($id);
     }
 
-    /**
-     * Get paginated visits.
-     *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-   public function getPaginatedVisits($perPage = 15)
+    public function createVisit(array $data): Visit
     {
-        return Visit::paginate($perPage);
+        return Visit::create($data);
     }
 
-    public function updateVisit(visit $visit, array $data): visit
+    public function updateVisit(Visit $visit, array $data): Visit
     {
         $visit->update($data);
         return $visit;
     }
 
-    public function deleteVisit(visit $visit): bool
+    public function deleteVisit(Visit $visit): bool
     {
         return $visit->delete();
     }
