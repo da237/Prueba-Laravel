@@ -13,6 +13,20 @@ class VisitController extends Controller
 {
     public function __construct(protected VisitService $visitService) {}
 
+
+    /**
+ * @OA\Get(
+ *     path="/api/visits",
+ *     summary="Lista de visitas",
+ *     tags={"Visitas"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Listado de visitas"
+ *     ),
+ *     security={{"sanctum":{}}}
+ * )
+ */
+
     public function index()
     {
         $visits = $this->visitService->getAllVisits();

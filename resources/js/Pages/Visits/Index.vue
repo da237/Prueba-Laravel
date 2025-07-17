@@ -4,6 +4,9 @@ import { Head, useForm, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const props = defineProps({ visits: Array })
 
@@ -82,15 +85,23 @@ const submit = () => {
     if (editingVisit.value) {
         form.put(route('visits.update', editingVisit.value.id), {
             onSuccess: () => {
+                toast.success('✅ Visita actualizada correctamente')
                 closeModal()
                 router.reload()
+            },
+            onError: () => {
+                toast.error('❌ Error al actualizar la visita')
             }
         })
     } else {
         form.post(route('visits.store'), {
             onSuccess: () => {
+                toast.success('✅ Visita creada correctamente')
                 closeModal()
                 router.reload()
+            },
+            onError: () => {
+                toast.error('❌ Error al crear la visita')
             }
         })
     }
@@ -170,9 +181,15 @@ onMounted(() => {
                         <td class="p-3">{{ visit.longitud }}</td>
                         <td class="p-3 space-x-2">
                             <button @click="openModal(visit)" class="text-blue-600 hover:underline">Editar</button>
-                            <button
-                                @click="router.delete(route('visits.destroy', visit.id), { onSuccess: () => router.reload() })"
-                                class="text-red-600 hover:underline">
+                            <button @click="router.delete(route('visits.destroy', visit.id), {
+                                onSuccess: () => {
+                                    toast.success('✅ Visita eliminada correctamente')
+                                    router.reload()
+                                },
+                                onError: () => {
+                                    toast.error('❌ Error al eliminar la visita')
+                                }
+                            })" class="text-red-600 hover:underline">
                                 Eliminar
                             </button>
                         </td>
