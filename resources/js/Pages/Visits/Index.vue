@@ -5,6 +5,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet'
 import { useToast } from 'vue-toastification'
+import { Pencil, Trash2 } from 'lucide-vue-next'
+
 
 const toast = useToast()
 
@@ -179,20 +181,28 @@ onMounted(() => {
                         <td class="p-3">{{ visit.email }}</td>
                         <td class="p-3">{{ visit.latitud }}</td>
                         <td class="p-3">{{ visit.longitud }}</td>
-                        <td class="p-3 space-x-2">
-                            <button @click="openModal(visit)" class="text-blue-600 hover:underline">Editar</button>
-                            <button @click="router.delete(route('visits.destroy', visit.id), {
-                                onSuccess: () => {
-                                    toast.success('✅ Visita eliminada correctamente')
-                                    router.reload()
-                                },
-                                onError: () => {
-                                    toast.error('❌ Error al eliminar la visita')
-                                }
-                            })" class="text-red-600 hover:underline">
-                                Eliminar
-                            </button>
+                        <td class="p-3">
+                            <div class="bg-gray-100 p-2 rounded-md flex gap-2 justify-center">
+                                <button @click="openModal(visit)"
+                                    class="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                    <Pencil class="w-4 h-4" />
+                                    Editar
+                                </button>
+                                <button @click="router.delete(route('visits.destroy', visit.id), {
+                                    onSuccess: () => {
+                                        toast.success('✅ Visita eliminada correctamente')
+                                        router.reload()
+                                    },
+                                    onError: () => {
+                                        toast.error('❌ Error al eliminar la visita')
+                                    }
+                                })" class="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                    <Trash2 class="w-4 h-4" />
+                                    Eliminar
+                                </button>
+                            </div>
                         </td>
+
                     </tr>
                 </tbody>
             </table>
